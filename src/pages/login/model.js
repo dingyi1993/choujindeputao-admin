@@ -1,5 +1,6 @@
 import { router, pathMatchRegexp } from 'utils'
 import { loginUser } from 'api'
+import cookie from 'js-cookie'
 
 export default {
   namespace: 'login',
@@ -8,9 +9,10 @@ export default {
 
   effects: {
     *login({ payload }, { put, call, select }) {
-      const data = yield call(loginUser, payload)
+      const result = yield call(loginUser, payload)
       const { locationQuery } = yield select(_ => _.app)
-      if (data.success) {
+      if (result.success) {
+        cookie.set('jwt_token', result.data.token)
         const { from } = locationQuery
         yield put({ type: 'app/query' })
         if (!pathMatchRegexp('/login', from)) {
@@ -20,7 +22,7 @@ export default {
           router.push('/dashboard')
         }
       } else {
-        throw data
+        throw result
       }
     },
   },

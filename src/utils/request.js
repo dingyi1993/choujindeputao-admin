@@ -4,12 +4,14 @@ import pathToRegexp from 'path-to-regexp'
 import { message } from 'antd'
 import { CANCEL_REQUEST_MESSAGE } from 'utils/constant'
 import qs from 'qs'
+import cookie from 'js-cookie'
 
 const { CancelToken } = axios
 window.cancelRequest = new Map()
 
 export default function request(options) {
   let { data, url, method = 'get' } = options
+  console.log('request options:', options)
   const cloneData = cloneDeep(data)
 
   try {
@@ -44,29 +46,53 @@ export default function request(options) {
       cancel,
     })
   })
+  // options.headers = {
+  //   'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8',
+  // }
+  const token = cookie.get('jwt_token')
+  if (token) {
+    options.headers = {
+      Authorization: `Bearer ${token}`,
+    }
+  }
+  if (method.toLocaleLowerCase() === 'post') {
+    options.data = qs.stringify(data)
+  }
 
   return axios(options)
     .then(response => {
       const { statusText, status, data } = response
 
-      let result = {}
-      if (typeof data === 'object') {
-        result = data
-        if (Array.isArray(data)) {
-          result.list = data
-        }
-      } else {
-        result.data = data
-      }
+      // let result = {}
+      // if (typeof data === 'object') {
+      //   result = data
+      //   if (Array.isArray(data)) {
+      //     result.list = data
+      //   }
+      // }
 
-      return Promise.resolve({
-        success: true,
-        message: statusText,
-        statusCode: status,
-        ...result,
+      console.log('response:', {
+          ...data,
+      })
+      if (data.code === 0) {
+        return Promise.resolve({
+          success: true,
+          ...data,
+        })
+      } else if (data.code === 401) {
+        return Promise.resolve({
+          success: true,
+          msg: data.msg,
+        })
+      }
+      return Promise.reject({
+        success: false,
+        message: data.error,
+        ...data,
       })
     })
     .catch(error => {
+      console.error(error)
       const { response, message } = error
 
       if (String(message) === CANCEL_REQUEST_MESSAGE) {
@@ -76,21 +102,21 @@ export default function request(options) {
       }
 
       let msg
-      let statusCode
+      let code
 
       if (response && response instanceof Object) {
         const { data, statusText } = response
-        statusCode = response.status
+        code = response.status
         msg = data.message || statusText
       } else {
-        statusCode = 600
+        code = 600
         msg = error.message || 'Network Error'
       }
 
       /* eslint-disable */
       return Promise.reject({
         success: false,
-        statusCode,
+        code,
         message: msg,
       })
     })

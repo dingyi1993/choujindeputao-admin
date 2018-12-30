@@ -70,13 +70,6 @@ export default {
   // https://ant.design/docs/react/customize-theme
   theme: './config/theme.config.js',
   // Webpack Configuration
-  proxy: {
-    '/api/v1/weather': {
-      target: 'https://api.seniverse.com/',
-      changeOrigin: true,
-      pathRewrite: { '^/api/v1/weather': '/v3/weather' },
-    },
-  },
   alias: {
     api: resolve(__dirname, './src/services/'),
     components: resolve(__dirname, './src/components'),

@@ -2,6 +2,7 @@
 
 import { router } from 'utils'
 import { stringify } from 'qs'
+import cookie from 'js-cookie'
 import store from 'store'
 import { ROLE_TYPE } from 'utils/constant'
 import { queryLayout, pathMatchRegexp } from 'utils'
@@ -72,34 +73,23 @@ export default {
   },
   effects: {
     *query({ payload }, { call, put, select }) {
-      const { success, user } = yield call(queryUserInfo, payload)
+      const { success, data } = yield call(queryUserInfo, payload)
       const { locationPathname } = yield select(_ => _.app)
 
-      if (success && user) {
-        const { list } = yield call(queryRouteList)
-        const { permissions } = user
-        let routeList = list
+      if (success && data) {
+        const routeResult = yield call(queryRouteList)
+        const permissions = { role: 'admin' }
+        let routeList = routeResult.data.list
         if (
           permissions.role === ROLE_TYPE.ADMIN ||
           permissions.role === ROLE_TYPE.DEVELOPER
         ) {
-          permissions.visit = list.map(item => item.id)
-        } else {
-          routeList = list.filter(item => {
-            const cases = [
-              permissions.visit.includes(item.id),
-              item.mpid
-                ? permissions.visit.includes(item.mpid) || item.mpid === '-1'
-                : true,
-              item.bpid ? permissions.visit.includes(item.bpid) : true,
-            ]
-            return cases.every(_ => _)
-          })
+          permissions.visit = routeResult.data.list.map(item => item.id)
         }
         yield put({
           type: 'updateState',
           payload: {
-            user,
+            user: data,
             permissions,
             routeList,
           },
@@ -122,6 +112,7 @@ export default {
     *signOut({ payload }, { call, put }) {
       const data = yield call(logoutUser)
       if (data.success) {
+        cookie.remove('jwt_token')
         yield put({
           type: 'updateState',
           payload: {

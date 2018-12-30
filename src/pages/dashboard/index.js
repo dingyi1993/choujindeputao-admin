@@ -7,13 +7,7 @@ import { Page, ScrollBar } from 'components'
 import {
   NumberCard,
   Quote,
-  Sales,
-  Weather,
-  RecentSales,
-  Comments,
-  Completed,
   Browser,
-  Cpu,
   User,
 } from './components'
 import styles from './index.less'
@@ -35,15 +29,9 @@ class Dashboard extends PureComponent {
   render() {
     const { avatar, username, dashboard, loading } = this.props
     const {
-      weather,
-      sales,
       quote,
       numbers,
-      recentSales,
-      comments,
-      completed,
       browser,
-      cpu,
       user,
     } = dashboard
 
@@ -61,32 +49,10 @@ class Dashboard extends PureComponent {
         <Row gutter={24}>
           {numberCards}
           <Col lg={18} md={24}>
-            <Card
-              bordered={false}
-              bodyStyle={{
-                padding: '24px 36px 24px 0',
-              }}
-            >
-              <Sales data={sales} />
-            </Card>
           </Col>
           <Col lg={6} md={24}>
             <Row gutter={24}>
               <Col lg={24} md={12}>
-                <Card
-                  bordered={false}
-                  className={styles.weather}
-                  bodyStyle={{
-                    padding: 0,
-                    height: 204,
-                    background: Color.blue,
-                  }}
-                >
-                  <Weather
-                    {...weather}
-                    loading={loading.effects['dashboard/queryWeather']}
-                  />
-                </Card>
               </Col>
               <Col lg={24} md={12}>
                 <Card
@@ -106,26 +72,10 @@ class Dashboard extends PureComponent {
             </Row>
           </Col>
           <Col lg={12} md={24}>
-            <Card bordered={false} {...bodyStyle}>
-              <RecentSales data={recentSales} />
-            </Card>
           </Col>
           <Col lg={12} md={24}>
-            <Card bordered={false} {...bodyStyle}>
-              <ScrollBar>
-                <Comments data={comments} />
-              </ScrollBar>
-            </Card>
           </Col>
           <Col lg={24} md={24}>
-            <Card
-              bordered={false}
-              bodyStyle={{
-                padding: '24px 36px 24px 0',
-              }}
-            >
-              <Completed data={completed} />
-            </Card>
           </Col>
           <Col lg={8} md={24}>
             <Card bordered={false} {...bodyStyle}>
@@ -133,11 +83,6 @@ class Dashboard extends PureComponent {
             </Card>
           </Col>
           <Col lg={8} md={24}>
-            <Card bordered={false} {...bodyStyle}>
-              <ScrollBar>
-                <Cpu {...cpu} />
-              </ScrollBar>
-            </Card>
           </Col>
           <Col lg={8} md={24}>
             <Card

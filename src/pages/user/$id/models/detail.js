@@ -21,17 +21,17 @@ export default {
 
   effects: {
     *query({ payload }, { call, put }) {
-      const data = yield call(queryUser, payload)
-      const { success, message, status, ...other } = data
+      const result = yield call(queryUser, payload)
+      const { success, data } = result
       if (success) {
         yield put({
           type: 'querySuccess',
           payload: {
-            data: other,
+            data,
           },
         })
       } else {
-        throw data
+        throw result
       }
     },
   },
