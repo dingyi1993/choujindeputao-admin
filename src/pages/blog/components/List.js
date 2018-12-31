@@ -1,6 +1,8 @@
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import { Table, Modal, Avatar } from 'antd'
+import moment from 'moment'
+import { Ellipsis } from 'ant-design-pro'
 import { DropOption } from 'components'
 import { Trans, withI18n } from '@lingui/react'
 import Link from 'umi/link'
@@ -30,54 +32,41 @@ class List extends PureComponent {
 
     const columns = [
       {
-        title: <Trans>Avatar</Trans>,
-        dataIndex: 'avatar',
-        key: 'avatar',
-        width: 72,
-        fixed: 'left',
-        render: text => <Avatar style={{ marginLeft: 8 }} src={text} />,
+        title: 'banner',
+        dataIndex: 'banner',
+        render: text => <Avatar shape="square" src={text ? ('http://127.0.0.1:3000' + text) : ''} />,
       },
       {
-        title: <Trans>Name</Trans>,
-        dataIndex: 'name',
-        key: 'name',
-        render: (text, record) => <Link to={`user/${record.id}`}>{text}</Link>,
+        title: '标题',
+        dataIndex: 'title',
+        render: (text, record) => (
+          <Link to={`blog/${record.id}`}><Ellipsis tooltip length={30}>{text}</Ellipsis></Link>
+        ),
       },
       {
-        title: <Trans>NickName</Trans>,
-        dataIndex: 'nickName',
-        key: 'nickName',
+        title: '分类',
+        dataIndex: 'category.name',
       },
       {
-        title: <Trans>Age</Trans>,
-        dataIndex: 'age',
-        key: 'age',
+        title: '标签',
+        dataIndex: 'tags',
       },
       {
-        title: <Trans>Gender</Trans>,
-        dataIndex: 'isMale',
-        key: 'isMale',
-        render: text => <span>{text ? 'Male' : 'Female'}</span>,
+        title: i18n.t`Visibility`,
+        dataIndex: 'visibility',
       },
       {
-        title: <Trans>Phone</Trans>,
-        dataIndex: 'phone',
-        key: 'phone',
+        title: i18n.t`Comments`,
+        dataIndex: 'comments',
       },
       {
-        title: <Trans>Email</Trans>,
-        dataIndex: 'email',
-        key: 'email',
+        title: i18n.t`Views`,
+        dataIndex: 'views',
       },
       {
-        title: <Trans>Address</Trans>,
-        dataIndex: 'address',
-        key: 'address',
-      },
-      {
-        title: <Trans>CreateTime</Trans>,
-        dataIndex: 'createTime',
-        key: 'createTime',
+        title: '发布日期',
+        dataIndex: 'datetime',
+        render: text => moment(text).format('YYYY-MM-DD HH:mm:ss'),
       },
       {
         title: <Trans>Operation</Trans>,

@@ -1,8 +1,8 @@
 import { pathMatchRegexp } from 'utils'
-import { queryUser } from 'api'
+import { queryBlog } from 'api'
 
 export default {
-  namespace: 'userDetail',
+  namespace: 'blogDetail',
 
   state: {
     data: {},
@@ -11,7 +11,7 @@ export default {
   subscriptions: {
     setup({ dispatch, history }) {
       history.listen(({ pathname }) => {
-        const match = pathMatchRegexp('/user/:id', pathname)
+        const match = pathMatchRegexp('/blog/:id', pathname)
         if (match) {
           dispatch({ type: 'query', payload: { id: match[1] } })
         }
@@ -21,7 +21,7 @@ export default {
 
   effects: {
     *query({ payload }, { call, put }) {
-      const result = yield call(queryUser, payload)
+      const result = yield call(queryBlog, payload)
       const { success, data } = result
       if (success) {
         yield put({

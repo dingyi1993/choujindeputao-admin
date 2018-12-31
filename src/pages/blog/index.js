@@ -11,19 +11,20 @@ import Filter from './components/Filter'
 import Modal from './components/Modal'
 
 @withI18n()
-@connect(({ user, loading }) => ({ user, loading }))
-class User extends PureComponent {
+@connect(({ blog, loading }) => ({ blog, loading }))
+class Blog extends PureComponent {
   render() {
-    const { location, dispatch, user, loading, i18n } = this.props
+    const { location, dispatch, blog, loading, i18n } = this.props
     const { query, pathname } = location
     const {
       list,
+      categories,
       pagination,
       currentItem,
       modalVisible,
       modalType,
       selectedRowKeys,
-    } = user
+    } = blog
 
     const handleRefresh = newQuery => {
       router.push({
@@ -39,17 +40,16 @@ class User extends PureComponent {
     }
 
     const modalProps = {
+      categories,
       item: modalType === 'create' ? {} : currentItem,
       visible: modalVisible,
       maskClosable: false,
-      confirmLoading: loading.effects[`user/${modalType}`],
-      title: `${
-        modalType === 'create' ? i18n.t`Create User` : i18n.t`Update User`
-      }`,
+      confirmLoading: loading.effects[`blog/${modalType}`],
+      title: modalType === 'create' ? '创建博客' : '更新博客',
       centered: true,
       onOk(data) {
         dispatch({
-          type: `user/${modalType}`,
+          type: `blog/${modalType}`,
           payload: data,
         }).then(() => {
           handleRefresh()
@@ -57,14 +57,14 @@ class User extends PureComponent {
       },
       onCancel() {
         dispatch({
-          type: 'user/hideModal',
+          type: 'blog/hideModal',
         })
       },
     }
 
     const listProps = {
       dataSource: list,
-      loading: loading.effects['user/query'],
+      loading: loading.effects['blog/query'],
       pagination,
       onChange(page) {
         handleRefresh({
@@ -74,7 +74,7 @@ class User extends PureComponent {
       },
       onDeleteItem(id) {
         dispatch({
-          type: 'user/delete',
+          type: 'blog/delete',
           payload: id,
         }).then(() => {
           handleRefresh({
@@ -87,7 +87,7 @@ class User extends PureComponent {
       },
       onEditItem(item) {
         dispatch({
-          type: 'user/showModal',
+          type: 'blog/showModal',
           payload: {
             modalType: 'update',
             currentItem: item,
@@ -98,7 +98,7 @@ class User extends PureComponent {
         selectedRowKeys,
         onChange: keys => {
           dispatch({
-            type: 'user/updateState',
+            type: 'blog/updateState',
             payload: {
               selectedRowKeys: keys,
             },
@@ -119,7 +119,7 @@ class User extends PureComponent {
       },
       onAdd() {
         dispatch({
-          type: 'user/showModal',
+          type: 'blog/showModal',
           payload: {
             modalType: 'create',
           },
@@ -129,7 +129,7 @@ class User extends PureComponent {
 
     const handleDeleteItems = () => {
       dispatch({
-        type: 'user/multiDelete',
+        type: 'blog/multiDelete',
         payload: {
           ids: selectedRowKeys,
         },
@@ -169,11 +169,11 @@ class User extends PureComponent {
   }
 }
 
-User.propTypes = {
-  user: PropTypes.object,
+Blog.propTypes = {
+  blog: PropTypes.object,
   location: PropTypes.object,
   dispatch: PropTypes.func,
   loading: PropTypes.object,
 }
 
-export default User
+export default Blog

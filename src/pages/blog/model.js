@@ -2,16 +2,17 @@
 import modelExtend from 'dva-model-extend'
 import { pathMatchRegexp } from 'utils'
 import {
-  queryUserList,
-  createUser,
-  removeUser,
-  updateUser,
-  removeUserList,
+  queryBlogList,
+  createBlog,
+  removeBlog,
+  updateBlog,
+  removeBlogList,
+  queryCategoryList,
 } from 'api'
 import { pageModel } from 'utils/model'
 
 export default modelExtend(pageModel, {
-  namespace: 'user',
+  namespace: 'blog',
 
   state: {
     currentItem: {},
@@ -23,7 +24,7 @@ export default modelExtend(pageModel, {
   subscriptions: {
     setup({ dispatch, history }) {
       history.listen(location => {
-        if (pathMatchRegexp('/user', location.pathname)) {
+        if (pathMatchRegexp('/blog', location.pathname)) {
           const payload = location.query || { page: 1, pageSize: 10 }
           dispatch({
             type: 'query',
@@ -36,25 +37,33 @@ export default modelExtend(pageModel, {
 
   effects: {
     *query({ payload = {} }, { call, put }) {
-      const data = yield call(queryUserList, payload)
-      if (data) {
+      const result = yield call(queryBlogList, payload)
+      const categoryResult = yield call(queryCategoryList, payload)
+      if (result && categoryResult) {
         yield put({
           type: 'querySuccess',
           payload: {
-            list: data.data,
+            list: result.data.list,
             pagination: {
               current: Number(payload.page) || 1,
               pageSize: Number(payload.pageSize) || 10,
-              total: data.total,
+              total: result.data.count,
             },
+            categories: categoryResult.data.list,
+          },
+        })
+        yield put({
+          type: 'updateState',
+          payload: {
+            categories: categoryResult.data.list,
           },
         })
       }
     },
 
     *delete({ payload }, { call, put, select }) {
-      const data = yield call(removeUser, { id: payload })
-      const { selectedRowKeys } = yield select(_ => _.user)
+      const data = yield call(removeBlog, { id: payload })
+      const { selectedRowKeys } = yield select(_ => _.blog)
       if (data.success) {
         yield put({
           type: 'updateState',
@@ -68,7 +77,7 @@ export default modelExtend(pageModel, {
     },
 
     *multiDelete({ payload }, { call, put }) {
-      const data = yield call(removeUserList, payload)
+      const data = yield call(removeBlogList, payload)
       if (data.success) {
         yield put({ type: 'updateState', payload: { selectedRowKeys: [] } })
       } else {
@@ -77,7 +86,7 @@ export default modelExtend(pageModel, {
     },
 
     *create({ payload }, { call, put }) {
-      const data = yield call(createUser, payload)
+      const data = yield call(createBlog, payload)
       if (data.success) {
         yield put({ type: 'hideModal' })
       } else {
@@ -86,9 +95,9 @@ export default modelExtend(pageModel, {
     },
 
     *update({ payload }, { select, call, put }) {
-      const id = yield select(({ user }) => user.currentItem.id)
-      const newUser = { ...payload, id }
-      const data = yield call(updateUser, newUser)
+      const id = yield select(({ blog }) => blog.currentItem.id)
+      const newBlog = { ...payload, id }
+      const data = yield call(updateBlog, newBlog)
       if (data.success) {
         yield put({ type: 'hideModal' })
       } else {

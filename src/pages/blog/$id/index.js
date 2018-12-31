@@ -4,11 +4,11 @@ import { connect } from 'dva'
 import { Page } from 'components'
 import styles from './index.less'
 
-@connect(({ userDetail }) => ({ userDetail }))
-class UserDetail extends PureComponent {
+@connect(({ blogDetail }) => ({ blogDetail }))
+class BlogDetail extends PureComponent {
   render() {
-    const { userDetail } = this.props
-    const { data } = userDetail
+    const { blogDetail } = this.props
+    const { data } = blogDetail
     const content = []
     for (let key in data) {
       if ({}.hasOwnProperty.call(data, key)) {
@@ -28,8 +28,8 @@ class UserDetail extends PureComponent {
   }
 }
 
-UserDetail.propTypes = {
-  userDetail: PropTypes.object,
+BlogDetail.propTypes = {
+  blogDetail: PropTypes.object,
 }
 
-export default UserDetail
+export default BlogDetail

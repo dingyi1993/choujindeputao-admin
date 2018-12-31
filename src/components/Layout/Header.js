@@ -33,9 +33,7 @@ class Header extends PureComponent {
         <SubMenu
           title={
             <Fragment>
-              <span style={{ color: '#999', marginRight: 4 }}>
-                <Trans>Hi,</Trans>
-              </span>
+              <span style={{ color: '#999', marginRight: 4 }}>你好，</span>
               <span>{username}</span>
               <Avatar style={{ marginLeft: 8 }} src={avatar} />
             </Fragment>

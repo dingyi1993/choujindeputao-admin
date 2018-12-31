@@ -5,14 +5,16 @@ export default {
   logoutUser: '/user/access/logout',
   loginUser: 'POST /user/access/login',
 
-  queryUser: '/user/:id',
-  queryUserList: '/users',
-  updateUser: 'Patch /user/:id',
-  createUser: 'POST /user',
-  removeUser: 'DELETE /user/:id',
-  removeUserList: 'POST /users/delete',
+  queryBlog: '/blog/:id',
+  queryBlogList: '/blog',
+  updateBlog: 'Patch /blog/:id',
+  createBlog: 'POST /blog',
+  removeBlog: 'DELETE /blog/:id',
+  removeBlogList: 'POST /blog/delete',
 
-  queryPostList: '/posts',
+  queryCategoryList: '/category',
+
+  // queryPostList: '/blog',
 
   queryDashboard: '/dashboard',
 }
