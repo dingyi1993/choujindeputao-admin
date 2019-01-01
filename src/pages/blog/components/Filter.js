@@ -1,14 +1,12 @@
 /* global document */
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
-import moment from 'moment'
 import { FilterItem } from 'components'
-import { Trans, withI18n } from '@lingui/react'
-import { Form, Button, Row, Col, DatePicker, Input, Cascader } from 'antd'
-import city from 'utils/city'
+import { withI18n } from '@lingui/react'
+import { Form, Button, Row, Col, Input, Select } from 'antd'
 
 const { Search } = Input
-const { RangePicker } = DatePicker
+const { Option } = Select
 
 const ColProps = {
   xs: 24,
@@ -27,13 +25,6 @@ const TwoColProps = {
 @Form.create()
 class Filter extends PureComponent {
   handleFields = fields => {
-    const { createTime } = fields
-    if (createTime.length) {
-      fields.createTime = [
-        moment(createTime[0]).format('YYYY-MM-DD'),
-        moment(createTime[1]).format('YYYY-MM-DD'),
-      ]
-    }
     return fields
   }
 
@@ -74,64 +65,35 @@ class Filter extends PureComponent {
   }
 
   render() {
-    const { onAdd, filter, form, i18n } = this.props
+    const { onAdd, filter, form, categories } = this.props
     const { getFieldDecorator } = form
-    const { name, address } = filter
-
-    let initialCreateTime = []
-    if (filter.createTime && filter.createTime[0]) {
-      initialCreateTime[0] = moment(filter.createTime[0])
-    }
-    if (filter.createTime && filter.createTime[1]) {
-      initialCreateTime[1] = moment(filter.createTime[1])
-    }
+    const { name } = filter
 
     return (
       <Row gutter={24}>
         <Col {...ColProps} xl={{ span: 4 }} md={{ span: 8 }}>
-          {getFieldDecorator('name', { initialValue: name })(
+          {getFieldDecorator('title', { initialValue: name })(
             <Search
-              placeholder={i18n.t`Search Name`}
+              placeholder="查找标题"
               onSearch={this.handleSubmit}
             />
           )}
         </Col>
-        <Col
-          {...ColProps}
-          xl={{ span: 4 }}
-          md={{ span: 8 }}
-          id="addressCascader"
-        >
-          {getFieldDecorator('address', { initialValue: address })(
-            <Cascader
-              style={{ width: '100%' }}
-              options={city}
-              placeholder={i18n.t`Please pick an address`}
-              onChange={this.handleChange.bind(this, 'address')}
-              getPopupContainer={() =>
-                document.getElementById('addressCascader')
-              }
-            />
-          )}
+        <Col {...ColProps} xl={{ span: 4 }} md={{ span: 8 }}>
+          <FilterItem label="分类">
+            {getFieldDecorator('category')(
+              <Select>
+                {(categories || []).map(item => <Option key={item.id} value={item.id}>{item.name}</Option>)}
+              </Select>
+            )}
+          </FilterItem>
         </Col>
-        <Col
-          {...ColProps}
-          xl={{ span: 6 }}
-          md={{ span: 8 }}
-          sm={{ span: 12 }}
-          id="createTimeRangePicker"
-        >
-          <FilterItem label={i18n.t`CreateTime`}>
-            {getFieldDecorator('createTime', {
-              initialValue: initialCreateTime,
-            })(
-              <RangePicker
-                style={{ width: '100%' }}
-                onChange={this.handleChange.bind(this, 'createTime')}
-                getCalendarContainer={() => {
-                  return document.getElementById('createTimeRangePicker')
-                }}
-              />
+        <Col {...ColProps} xl={{ span: 4 }} md={{ span: 8 }}>
+          <FilterItem label="状态">
+            {getFieldDecorator('status')(
+              <Select allowClear placeholder="选择状态">
+                {[{ name: '有效', value: 1 }, { name: '失效', value: 2 }].map(item => <Option key={item.value} value={item.value}>{item.name}</Option>)}
+              </Select>
             )}
           </FilterItem>
         </Col>
@@ -148,14 +110,14 @@ class Filter extends PureComponent {
                 className="margin-right"
                 onClick={this.handleSubmit}
               >
-                <Trans>Search</Trans>
+                搜索
               </Button>
               <Button onClick={this.handleReset}>
-                <Trans>Reset</Trans>
+                重置
               </Button>
             </div>
             <Button type="ghost" onClick={onAdd}>
-              <Trans>Create</Trans>
+              创建
             </Button>
           </Row>
         </Col>

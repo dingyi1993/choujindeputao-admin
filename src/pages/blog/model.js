@@ -5,6 +5,7 @@ import {
   queryBlogList,
   createBlog,
   removeBlog,
+  openBlog,
   updateBlog,
   removeBlogList,
   queryCategoryList,
@@ -37,9 +38,10 @@ export default modelExtend(pageModel, {
 
   effects: {
     *query({ payload = {} }, { call, put }) {
+      !payload.status && (payload.status = -1)
       const result = yield call(queryBlogList, payload)
-      const categoryResult = yield call(queryCategoryList, payload)
-      if (result && categoryResult) {
+      const categoryResult = yield call(queryCategoryList)
+      if (result) {
         yield put({
           type: 'querySuccess',
           payload: {
@@ -49,7 +51,6 @@ export default modelExtend(pageModel, {
               pageSize: Number(payload.pageSize) || 10,
               total: result.data.count,
             },
-            categories: categoryResult.data.list,
           },
         })
         yield put({
@@ -85,6 +86,21 @@ export default modelExtend(pageModel, {
       }
     },
 
+    *open({ payload }, { call, put, select }) {
+      const data = yield call(openBlog, { id: payload })
+      const { selectedRowKeys } = yield select(_ => _.blog)
+      if (data.success) {
+        yield put({
+          type: 'updateState',
+          payload: {
+            selectedRowKeys: selectedRowKeys.filter(_ => _ !== payload),
+          },
+        })
+      } else {
+        throw data
+      }
+    },
+
     *create({ payload }, { call, put }) {
       const data = yield call(createBlog, payload)
       if (data.success) {
@@ -95,8 +111,8 @@ export default modelExtend(pageModel, {
     },
 
     *update({ payload }, { select, call, put }) {
-      const id = yield select(({ blog }) => blog.currentItem.id)
-      const newBlog = { ...payload, id }
+      // const _id = yield select(({ blog }) => blog.currentItem._id)
+      const newBlog = { ...payload }
       const data = yield call(updateBlog, newBlog)
       if (data.success) {
         yield put({ type: 'hideModal' })

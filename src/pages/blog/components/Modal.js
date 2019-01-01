@@ -1,12 +1,13 @@
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import { Form, Input, InputNumber, Radio, Modal, Cascader, Select } from 'antd'
-import { Trans, withI18n } from '@lingui/react'
-import city from 'utils/city'
+import { withI18n } from '@lingui/react'
+// import { Editor } from 'components'
 
 const FormItem = Form.Item
 
 const { Option } = Select
+const { TextArea } = Input
 
 const formItemLayout = {
   labelCol: {
@@ -24,15 +25,13 @@ class BlogModal extends PureComponent {
     const { validateFields, getFieldsValue } = form
 
     validateFields(errors => {
-      console.log(22, errors)
       if (errors) {
         return
       }
       const data = {
         ...getFieldsValue(),
-        key: item.key,
+        _id: item._id,
       }
-      // data.address = data.address.join(' ')
       onOk(data)
     })
   }
@@ -42,7 +41,7 @@ class BlogModal extends PureComponent {
     const { getFieldDecorator } = form
 
     return (
-      <Modal {...modalProps} onOk={this.handleOk}>
+      <Modal {...modalProps} onOk={this.handleOk} style={{ width: 1000 }}>
         <Form layout="horizontal">
         <FormItem label={'id'} hasFeedback {...formItemLayout}>
             {getFieldDecorator('id', {
@@ -96,7 +95,7 @@ class BlogModal extends PureComponent {
                   required: true,
                 },
               ],
-            })(<Input />)}
+            })(<TextArea rows={10} />)}
           </FormItem>
         </Form>
       </Modal>

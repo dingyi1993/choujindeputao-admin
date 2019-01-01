@@ -14,7 +14,7 @@ import Modal from './components/Modal'
 @connect(({ blog, loading }) => ({ blog, loading }))
 class Blog extends PureComponent {
   render() {
-    const { location, dispatch, blog, loading, i18n } = this.props
+    const { location, dispatch, blog, loading } = this.props
     const { query, pathname } = location
     const {
       list,
@@ -85,6 +85,19 @@ class Blog extends PureComponent {
           })
         })
       },
+      onOpenItem(id) {
+        dispatch({
+          type: 'blog/open',
+          payload: id,
+        }).then(() => {
+          handleRefresh({
+            page:
+              list.length === 1 && pagination.current > 1
+                ? pagination.current - 1
+                : pagination.current,
+          })
+        })
+      },
       onEditItem(item) {
         dispatch({
           type: 'blog/showModal',
@@ -108,6 +121,7 @@ class Blog extends PureComponent {
     }
 
     const filterProps = {
+      categories,
       filter: {
         ...query,
       },
