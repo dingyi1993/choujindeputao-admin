@@ -3,6 +3,8 @@ import { resolve } from 'path'
 import { i18n } from './src/utils/config'
 
 export default {
+  publicPath: './',
+  history: 'hash',
   ignoreMomentLocale: true,
   targets: { ie: 9 },
   plugins: [
