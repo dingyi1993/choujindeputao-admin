@@ -5,7 +5,7 @@ export default {
   logoutUser: '/user/access/logout',
   loginUser: 'POST /user/access/login',
 
-  queryBlog: '/blog/:id?admin=1',
+  queryBlog: '/blog/:id/?admin=1',
   queryBlogList: '/blog?admin=1',
   updateBlog: 'PUT /blog/:id',
   createBlog: 'POST /blog',
