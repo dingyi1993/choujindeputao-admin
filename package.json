@@ -100,7 +100,7 @@
     "build": "umi build",
     "lint:js": "eslint --ext .js src",
     "lint:style": "stylelint \"src/**/*.less\" --syntax less",
-    "start": "umi dev",
+    "dev": "umi dev",
     "test": "cross-env BABELRC=none umi test",
     "prettier": "prettier --write 'src/**/*.(js|less)'",
     "add-locale": "lingui add-locale",
