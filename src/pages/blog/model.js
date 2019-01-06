@@ -39,6 +39,7 @@ export default modelExtend(pageModel, {
   effects: {
     *query({ payload = {} }, { call, put }) {
       !payload.status && (payload.status = -1)
+      payload.admin = 1
       const result = yield call(queryBlogList, payload)
       const categoryResult = yield call(queryCategoryList)
       if (result) {

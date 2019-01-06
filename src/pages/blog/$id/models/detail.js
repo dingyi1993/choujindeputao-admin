@@ -21,6 +21,7 @@ export default {
 
   effects: {
     *query({ payload }, { call, put }) {
+      payload.admin = 1
       const result = yield call(queryBlog, payload)
       const { success, data } = result
       if (success) {
