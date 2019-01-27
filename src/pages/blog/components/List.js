@@ -74,6 +74,11 @@ class List extends PureComponent {
         render: text => moment(text).format('YYYY-MM-DD HH:mm:ss'),
       },
       {
+        title: '更新日期',
+        dataIndex: 'updateTime',
+        render: text => moment(text).format('YYYY-MM-DD HH:mm:ss'),
+      },
+      {
         title: '操作',
         key: 'operation',
         fixed: 'right',
