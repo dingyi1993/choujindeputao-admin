@@ -57,17 +57,8 @@ class PrimaryLayout extends PureComponent {
     const { isMobile } = this.state
     const { onCollapseChange } = this
 
-    // Localized route name.
-    const newRouteList = routeList.map(item => {
-      const { zhName, ...other } = item
-      return {
-        ...other,
-        name: zhName,
-      }
-    })
-
     // Find a route that matches the pathname.
-    const currentRoute = newRouteList.find(
+    const currentRoute = routeList.find(
       _ => _.route && pathMatchRegexp(_.route, location.pathname)
     )
 
@@ -77,7 +68,7 @@ class PrimaryLayout extends PureComponent {
       : false
 
     // MenuParentId is equal to -1 is not a available menu.
-    const menus = newRouteList.filter(_ => _.menuParentId !== '-1')
+    const menus = routeList.filter(_ => _.menuParentId !== '-1')
 
     const headerProps = {
       menus,
@@ -137,7 +128,7 @@ class PrimaryLayout extends PureComponent {
           >
             <Header {...headerProps} />
             <Content className={styles.content}>
-              <Bread routeList={newRouteList} />
+              <Bread routeList={routeList} />
               {hasPermission ? children : <Error />}
             </Content>
             <BackTop

@@ -7,7 +7,7 @@ import store from 'store'
 import { ROLE_TYPE } from 'utils/constant'
 import { queryLayout, pathMatchRegexp } from 'utils'
 import { CANCEL_REQUEST_MESSAGE } from 'utils/constant'
-import { queryRouteList, logoutUser, queryUserInfo } from 'api'
+import { logoutUser, queryUserInfo } from 'api'
 import config from 'config'
 
 export default {
@@ -21,8 +21,7 @@ export default {
       {
         id: '1',
         icon: 'laptop',
-        name: 'Dashboard',
-        zhName: '仪表盘',
+        name: '仪表盘',
         router: '/dashboard',
       },
     ],
@@ -77,14 +76,99 @@ export default {
       const { locationPathname } = yield select(_ => _.app)
 
       if (success && data) {
-        const routeResult = yield call(queryRouteList)
+        const routeList = [
+          {
+            id: '1',
+            icon: 'dashboard',
+            name: '仪表盘',
+            route: '/dashboard',
+          },
+          {
+            id: '2',
+            breadcrumbParentId: '1',
+            name: 'Users',
+            icon: 'user',
+            route: '/user',
+          },
+          {
+            id: '7',
+            breadcrumbParentId: '1',
+            name: '博客管理',
+            icon: 'shopping-cart',
+            route: '/blog',
+          },
+          {
+            id: '71',
+            menuParentId: '-1',
+            breadcrumbParentId: '7',
+            name: '博客详情',
+            route: '/blog/:id',
+          },
+          {
+            id: '21',
+            menuParentId: '-1',
+            breadcrumbParentId: '2',
+            name: '用户详情',
+            route: '/user/:id',
+          },
+          {
+            id: '3',
+            breadcrumbParentId: '1',
+            name: 'Request',
+            icon: 'api',
+            route: '/request',
+          },
+          {
+            id: '4',
+            breadcrumbParentId: '1',
+            name: 'UI组件',
+            icon: 'camera-o',
+          },
+          {
+            id: '45',
+            breadcrumbParentId: '4',
+            menuParentId: '4',
+            name: 'Editor',
+            icon: 'edit',
+            route: '/UIElement/editor',
+          },
+          {
+            id: '5',
+            breadcrumbParentId: '1',
+            name: 'Charts',
+            icon: 'code-o',
+          },
+          {
+            id: '51',
+            breadcrumbParentId: '5',
+            menuParentId: '5',
+            name: 'ECharts',
+            icon: 'line-chart',
+            route: '/chart/ECharts',
+          },
+          {
+            id: '52',
+            breadcrumbParentId: '5',
+            menuParentId: '5',
+            name: 'HighCharts',
+            icon: 'bar-chart',
+            route: '/chart/highCharts',
+          },
+          {
+            id: '53',
+            breadcrumbParentId: '5',
+            menuParentId: '5',
+            name: 'Rechartst',
+            icon: 'area-chart',
+            route: '/chart/Recharts',
+          },
+        ]
         const permissions = { role: 'admin' }
-        let routeList = routeResult.data.list
         if (
           permissions.role === ROLE_TYPE.ADMIN ||
           permissions.role === ROLE_TYPE.DEVELOPER
         ) {
-          permissions.visit = routeResult.data.list.map(item => item.id)
+          permissions.visit = routeList.map(item => item.id)
         }
         yield put({
           type: 'updateState',
@@ -122,8 +206,7 @@ export default {
               {
                 id: '1',
                 icon: 'laptop',
-                name: 'Dashboard',
-                zhName: '仪表盘',
+                name: '仪表盘',
                 router: '/dashboard',
               },
             ],
