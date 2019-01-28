@@ -3,11 +3,9 @@ import PropTypes from 'prop-types'
 import { Breadcrumb, Icon } from 'antd'
 import Link from 'umi/navlink'
 import withRouter from 'umi/withRouter'
-import { withI18n } from '@lingui/react'
-import { pathMatchRegexp, queryAncestors, addLangPrefix } from 'utils'
+import { pathMatchRegexp, queryAncestors } from 'utils'
 import styles from './Bread.less'
 
-@withI18n()
 @withRouter
 class Bread extends PureComponent {
   generateBreadcrumbs = paths => {
@@ -24,7 +22,7 @@ class Bread extends PureComponent {
       return (
         <Breadcrumb.Item key={key}>
           {paths.length - 1 !== key ? (
-            <Link to={addLangPrefix(item.route) || '#'}>{content}</Link>
+            <Link to={item.route || '#'}>{content}</Link>
           ) : (
             content
           )}
@@ -33,7 +31,7 @@ class Bread extends PureComponent {
     })
   }
   render() {
-    const { routeList, location, i18n } = this.props
+    const { routeList, location } = this.props
 
     // Find a route that matches the pathname.
     const currentRoute = routeList.find(
@@ -47,7 +45,7 @@ class Bread extends PureComponent {
           routeList[0],
           {
             id: 404,
-            name: i18n.t`Not Found`,
+            name: `Not Found`,
           },
         ]
 

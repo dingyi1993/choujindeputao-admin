@@ -1,7 +1,6 @@
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import { Form, Input, InputNumber, Radio, Modal, Cascader, Select } from 'antd'
-import { withI18n } from '@lingui/react'
 // import { Editor } from 'components'
 
 const FormItem = Form.Item
@@ -17,7 +16,6 @@ const formItemLayout = {
     span: 14,
   },
 }
-@withI18n()
 @Form.create()
 class BlogModal extends PureComponent {
   handleOk = () => {
@@ -37,7 +35,7 @@ class BlogModal extends PureComponent {
   }
 
   render() {
-    const { item = {}, onOk, form, i18n, categories, ...modalProps } = this.props
+    const { item = {}, onOk, form, categories, ...modalProps } = this.props
     const { getFieldDecorator } = form
 
     return (

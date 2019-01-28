@@ -3,14 +3,12 @@ import PropTypes from 'prop-types'
 import { router } from 'utils'
 import { connect } from 'dva'
 import { Row, Col, Button, Popconfirm } from 'antd'
-import { withI18n } from '@lingui/react'
 import { Page } from 'components'
 import { stringify } from 'qs'
 import List from './components/List'
 import Filter from './components/Filter'
 import Modal from './components/Modal'
 
-@withI18n()
 @connect(({ blog, loading }) => ({ blog, loading }))
 class Blog extends PureComponent {
   render() {

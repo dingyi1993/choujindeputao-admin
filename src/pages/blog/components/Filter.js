@@ -2,7 +2,6 @@
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import { FilterItem } from 'components'
-import { withI18n } from '@lingui/react'
 import { Form, Button, Row, Col, Input, Select } from 'antd'
 
 const { Search } = Input
@@ -21,7 +20,6 @@ const TwoColProps = {
   xl: 96,
 }
 
-@withI18n()
 @Form.create()
 class Filter extends PureComponent {
   handleFields = fields => {

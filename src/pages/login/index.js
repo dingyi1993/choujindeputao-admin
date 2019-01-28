@@ -3,14 +3,11 @@ import PropTypes from 'prop-types'
 import { connect } from 'dva'
 import { Button, Row, Form, Icon, Input } from 'antd'
 import { GlobalFooter } from 'ant-design-pro'
-import { Trans, withI18n } from '@lingui/react'
-import { setLocale } from 'utils'
 import config from 'utils/config'
 
 import styles from './index.less'
 const FormItem = Form.Item
 
-@withI18n()
 @connect(({ loading }) => ({ loading }))
 @Form.create()
 class Login extends PureComponent {
@@ -26,7 +23,7 @@ class Login extends PureComponent {
   }
 
   render() {
-    const { loading, form, i18n } = this.props
+    const { loading, form } = this.props
     const { getFieldDecorator } = form
 
     let footerLinks = [
@@ -37,17 +34,6 @@ class Login extends PureComponent {
         blankTarget: true,
       },
     ]
-
-    if (config.i18n) {
-      footerLinks = footerLinks.concat(
-        config.i18n.languages.map(item => ({
-          key: item.key,
-          title: (
-            <span onClick={setLocale.bind(null, item.key)}>{item.title}</span>
-          ),
-        }))
-      )
-    }
 
     return (
       <Fragment>
@@ -67,7 +53,7 @@ class Login extends PureComponent {
               })(
                 <Input
                   onPressEnter={this.handleOk}
-                  placeholder={i18n.t`Username`}
+                  placeholder={'用户名'}
                 />
               )}
             </FormItem>
@@ -82,7 +68,7 @@ class Login extends PureComponent {
                 <Input
                   type="password"
                   onPressEnter={this.handleOk}
-                  placeholder={i18n.t`Password`}
+                  placeholder={'密码'}
                 />
               )}
             </FormItem>
@@ -91,19 +77,7 @@ class Login extends PureComponent {
                 type="primary"
                 onClick={this.handleOk}
                 loading={loading.effects.login}
-              >
-                <Trans>Sign in</Trans>
-              </Button>
-              <p>
-                <span>
-                  <Trans>Username</Trans>
-                  ：guest
-                </span>
-                <span>
-                  <Trans>Password</Trans>
-                  ：guest
-                </span>
-              </p>
+              >登录</Button>
             </Row>
           </form>
         </div>

@@ -7,7 +7,6 @@ import {
   arrayToTree,
   queryAncestors,
   pathMatchRegexp,
-  addLangPrefix,
 } from 'utils'
 import store from 'store'
 
@@ -57,7 +56,7 @@ class SiderMenu extends PureComponent {
       }
       return (
         <Menu.Item key={item.id}>
-          <Navlink to={addLangPrefix(item.route) || '#'}>
+          <Navlink to={item.route || '#'}>
             {item.icon && <Icon type={item.icon} />}
             <span>{item.name}</span>
           </Navlink>

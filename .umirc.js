@@ -1,6 +1,5 @@
 // https://umijs.org/config/
 import { resolve } from 'path'
-import { i18n } from './src/utils/config'
 
 export default {
   publicPath: './',
@@ -34,27 +33,6 @@ export default {
             /chart\/Recharts\/.+Component\.js$/,
             /chart\/Recharts\/Container\.js$/,
           ],
-          update: routes => {
-            if (!i18n) return routes
-
-            const newRoutes = []
-            for (const item of routes[0].routes) {
-              newRoutes.push(item)
-              if (item.path) {
-                newRoutes.push(
-                  Object.assign({}, item, {
-                    path:
-                      `/:lang(${i18n.languages
-                        .map(item => item.key)
-                        .join('|')})` + item.path,
-                  })
-                )
-              }
-            }
-            routes[0].routes = newRoutes
-
-            return routes
-          },
         },
         dll: {
           include: ['dva', 'dva/router', 'dva/saga', 'dva/fetch', 'antd/es'],

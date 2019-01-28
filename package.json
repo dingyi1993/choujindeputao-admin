@@ -79,9 +79,6 @@
     ]
   },
   "lingui": {
-    "fallbackLocale": "en",
-    "sourceLocale": "en",
-    "localeDir": "src/locales",
     "srcPathDirs": [
       "src/pages",
       "src/layouts",
@@ -103,9 +100,7 @@
     "dev": "umi dev",
     "test": "cross-env BABELRC=none umi test",
     "prettier": "prettier --write 'src/**/*.(js|less)'",
-    "add-locale": "lingui add-locale",
     "extract": "lingui extract",
-    "trans": "lingui extract --clean && node ./scripts/translate.js",
     "doc": "docsify serve docs"
   }
 }
