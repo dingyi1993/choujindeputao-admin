@@ -64,6 +64,9 @@ export default {
           manifestOptions: {
             srcPath: 'manifest.json'
           },
+          workboxOptions: {
+            swDest: './service-worker.js',
+          },
         }
       },
     ],

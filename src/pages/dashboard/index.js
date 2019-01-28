@@ -6,9 +6,7 @@ import { Color } from 'utils'
 import { Page, ScrollBar } from 'components'
 import {
   NumberCard,
-  Quote,
   Browser,
-  User,
 } from './components'
 import styles from './index.less'
 
@@ -27,13 +25,36 @@ const bodyStyle = {
 }))
 class Dashboard extends PureComponent {
   render() {
-    const { avatar, username, dashboard, loading } = this.props
+    const { dashboard, loading } = this.props
     const {
-      quote,
-      numbers,
       browser,
-      user,
     } = dashboard
+    const numbers = [
+      {
+        icon: 'bar-chart',
+        color: Color.green,
+        title: '博客数',
+        number: 2781,
+      },
+      {
+        icon: 'bar-chart',
+        color: Color.blue,
+        title: '分类数',
+        number: 3241,
+      },
+      {
+        icon: 'bar-chart',
+        color: Color.purple,
+        title: '标签数',
+        number: 253,
+      },
+      {
+        icon: 'bar-chart',
+        color: Color.red,
+        title: '运行天数',
+        number: 4324,
+      },
+    ]
 
     const numberCards = numbers.map((item, key) => (
       <Col key={key} lg={6} md={12}>
@@ -50,48 +71,11 @@ class Dashboard extends PureComponent {
           {numberCards}
           <Col lg={18} md={24}>
           </Col>
-          <Col lg={6} md={24}>
-            <Row gutter={24}>
-              <Col lg={24} md={12}>
-              </Col>
-              <Col lg={24} md={12}>
-                <Card
-                  bordered={false}
-                  className={styles.quote}
-                  bodyStyle={{
-                    padding: 0,
-                    height: 204,
-                    background: Color.peach,
-                  }}
-                >
-                  <ScrollBar>
-                    <Quote {...quote} />
-                  </ScrollBar>
-                </Card>
-              </Col>
-            </Row>
-          </Col>
-          <Col lg={12} md={24}>
-          </Col>
-          <Col lg={12} md={24}>
-          </Col>
-          <Col lg={24} md={24}>
-          </Col>
-          <Col lg={8} md={24}>
+          {/* <Col lg={8} md={24}>
             <Card bordered={false} {...bodyStyle}>
               <Browser data={browser} />
             </Card>
-          </Col>
-          <Col lg={8} md={24}>
-          </Col>
-          <Col lg={8} md={24}>
-            <Card
-              bordered={false}
-              bodyStyle={{ ...bodyStyle.bodyStyle, padding: 0 }}
-            >
-              <User {...user} avatar={avatar} username={username} />
-            </Card>
-          </Col>
+          </Col> */}
         </Row>
       </Page>
     )

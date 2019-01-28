@@ -7,10 +7,6 @@ import { model } from 'utils/model'
 export default modelExtend(model, {
   namespace: 'dashboard',
   state: {
-    quote: {
-      avatar:
-        'http://img.hb.aicdn.com/bc442cf0cc6f7940dcc567e465048d1a8d634493198c4-sPx5BR_fw236',
-    },
     numbers: [],
     browser: [],
     user: {
@@ -32,11 +28,11 @@ export default modelExtend(model, {
   },
   effects: {
     *query({ payload }, { call, put }) {
-      const data = yield call(queryDashboard, parse(payload))
-      yield put({
-        type: 'updateState',
-        payload: data,
-      })
+      // const data = yield call(queryDashboard, parse(payload))
+      // yield put({
+      //   type: 'updateState',
+      //   payload: data,
+      // })
     },
   },
 })
