@@ -1,10 +1,12 @@
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
-import { Form, Input, InputNumber, Radio, Modal, Cascader, Select } from 'antd'
+import { Form, Input, Modal, Select, Tabs } from 'antd'
 // import { Editor } from 'components'
+import MarkdownRenderer from 'react-markdown-renderer'
 
 const { Option } = Select
 const { TextArea } = Input
+const { TabPane } = Tabs
 
 const formItemLayout = {
   labelCol: { span: 2 },
@@ -12,6 +14,15 @@ const formItemLayout = {
 }
 @Form.create()
 class BlogModal extends PureComponent {
+  constructor(props) {
+    super(props)
+    this.state = {
+      md: props.item.md,
+    }
+
+    this.handleMarkdownBlur = this.handleMarkdownBlur.bind(this)
+  }
+
   handleOk = () => {
     const { item = {}, onOk, form } = this.props
     const { validateFields, getFieldsValue } = form
@@ -26,6 +37,10 @@ class BlogModal extends PureComponent {
       }
       onOk(data)
     })
+  }
+
+  handleMarkdownBlur (e) {
+    this.setState({ md: e.target.value })
   }
 
   render() {
@@ -84,16 +99,26 @@ class BlogModal extends PureComponent {
               ],
             })(<Input />)}
           </Form.Item>
-
-          <Form.Item label={'内容'} hasFeedback {...formItemLayout}>
-            {getFieldDecorator('md', {
-              initialValue: item.md,
-              rules: [
-                {
-                  required: true,
-                },
-              ],
-            })(<TextArea rows={10} />)}
+          <Form.Item label={'内容'} {...formItemLayout}>
+            <Tabs type="card">
+              <TabPane tab="markdown" key="markdown">
+                {getFieldDecorator('md', {
+                  initialValue: item.md,
+                  rules: [
+                    {
+                      required: true,
+                    },
+                  ],
+                })(<TextArea rows={16} onBlur={this.handleMarkdownBlur} />)}
+              </TabPane>
+              <TabPane tab="预览" key="preview"><MarkdownRenderer markdown={this.state.md} options={{
+                html: true,
+                xhtmlOut: true,
+                breaks: true,
+                linkify: true,
+                typographer: true,
+              }} /></TabPane>
+            </Tabs>
           </Form.Item>
         </Form>
       </Modal>

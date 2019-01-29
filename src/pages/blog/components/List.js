@@ -44,7 +44,7 @@ class List extends PureComponent {
         title: '标题',
         dataIndex: 'title',
         render: (text, record) => (
-          <Link to={`blog/${record.id}`}><Ellipsis tooltip length={30}>{text}</Ellipsis></Link>
+          <Link to={`blog/${record.id}`}><Ellipsis tooltip length={50}>{text}</Ellipsis></Link>
         ),
       },
       {
