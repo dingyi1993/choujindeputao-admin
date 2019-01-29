@@ -1,4 +1,3 @@
-/* global document */
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import { Form, Button, Input, Select } from 'antd'
@@ -33,7 +32,6 @@ class Filter extends PureComponent {
       }
     }
     setFieldsValue(fields)
-    this.handleSubmit()
   }
   handleChange = (key, values) => {
     const { form, onFilterChange } = this.props

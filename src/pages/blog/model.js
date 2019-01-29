@@ -9,6 +9,7 @@ import {
   updateBlog,
   removeBlogList,
   queryCategoryList,
+  queryTagList,
 } from 'api'
 import { pageModel } from 'utils/model'
 
@@ -42,7 +43,8 @@ export default modelExtend(pageModel, {
       payload.admin = 1
       const result = yield call(queryBlogList, payload)
       const categoryResult = yield call(queryCategoryList)
-      if (result) {
+      const tagResult = yield call(queryTagList)
+      if (result.code === 0 && categoryResult.code === 0 && tagResult.code === 0) {
         yield put({
           type: 'querySuccess',
           payload: {
@@ -58,6 +60,12 @@ export default modelExtend(pageModel, {
           type: 'updateState',
           payload: {
             categories: categoryResult.data.list,
+          },
+        })
+        yield put({
+          type: 'updateState',
+          payload: {
+            tags: tagResult.data.list,
           },
         })
       }

@@ -13,6 +13,9 @@ export default {
 
   queryCategoryList: '/category',
 
+  queryTagList: '/tag',
+  createTag: 'POST /tag',
+
   // queryPostList: '/blog',
 
   queryDashboard: '/dashboard',

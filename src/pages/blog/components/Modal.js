@@ -3,18 +3,12 @@ import PropTypes from 'prop-types'
 import { Form, Input, InputNumber, Radio, Modal, Cascader, Select } from 'antd'
 // import { Editor } from 'components'
 
-const FormItem = Form.Item
-
 const { Option } = Select
 const { TextArea } = Input
 
 const formItemLayout = {
-  labelCol: {
-    span: 6,
-  },
-  wrapperCol: {
-    span: 14,
-  },
+  labelCol: { span: 2 },
+  wrapperCol: { span: 22 },
 }
 @Form.create()
 class BlogModal extends PureComponent {
@@ -35,13 +29,13 @@ class BlogModal extends PureComponent {
   }
 
   render() {
-    const { item = {}, onOk, form, categories, ...modalProps } = this.props
+    const { item = {}, onOk, form, categories, tags, ...modalProps } = this.props
     const { getFieldDecorator } = form
 
     return (
-      <Modal {...modalProps} onOk={this.handleOk} style={{ width: 1000 }}>
+      <Modal {...modalProps} onOk={this.handleOk} width={1000}>
         <Form layout="horizontal">
-        <FormItem label={'id'} hasFeedback {...formItemLayout}>
+        <Form.Item label={'id'} hasFeedback {...formItemLayout}>
             {getFieldDecorator('id', {
               initialValue: item.id,
               rules: [
@@ -50,8 +44,8 @@ class BlogModal extends PureComponent {
                 },
               ],
             })(<Input />)}
-          </FormItem>
-          <FormItem label={'标题'} {...formItemLayout}>
+          </Form.Item>
+          <Form.Item label={'标题'} {...formItemLayout}>
             {getFieldDecorator('title', {
               initialValue: item.title,
               rules: [
@@ -60,8 +54,8 @@ class BlogModal extends PureComponent {
                 },
               ],
             })(<Input />)}
-          </FormItem>
-          <FormItem label={'分类'} {...formItemLayout}>
+          </Form.Item>
+          <Form.Item label={'分类'} {...formItemLayout}>
             {getFieldDecorator('category', {
               initialValue: item.category && item.category.id,
               rules: [
@@ -72,9 +66,15 @@ class BlogModal extends PureComponent {
             })(<Select>
               {categories.map(item => <Option key={item.id} value={item.id}>{item.name}</Option>)}
             </Select>)}
-          </FormItem>
-
-          <FormItem label={'简介'} hasFeedback {...formItemLayout}>
+          </Form.Item>
+          <Form.Item label={'标签'} {...formItemLayout}>
+            {getFieldDecorator('tags', {
+              initialValue: item.tags,
+            })(<Select mode="multiple">
+              {tags.map(item => <Option key={item._id} value={item._id}>{item.name}</Option>)}
+            </Select>)}
+          </Form.Item>
+          <Form.Item label={'简介'} hasFeedback {...formItemLayout}>
             {getFieldDecorator('excerpt', {
               initialValue: item.excerpt,
               rules: [
@@ -83,9 +83,9 @@ class BlogModal extends PureComponent {
                 },
               ],
             })(<Input />)}
-          </FormItem>
+          </Form.Item>
 
-          <FormItem label={'内容'} hasFeedback {...formItemLayout}>
+          <Form.Item label={'内容'} hasFeedback {...formItemLayout}>
             {getFieldDecorator('md', {
               initialValue: item.md,
               rules: [
@@ -94,7 +94,7 @@ class BlogModal extends PureComponent {
                 },
               ],
             })(<TextArea rows={10} />)}
-          </FormItem>
+          </Form.Item>
         </Form>
       </Modal>
     )

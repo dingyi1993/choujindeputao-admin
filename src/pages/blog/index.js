@@ -17,6 +17,7 @@ class Blog extends PureComponent {
     const {
       list,
       categories,
+      tags,
       pagination,
       currentItem,
       modalVisible,
@@ -39,6 +40,7 @@ class Blog extends PureComponent {
 
     const modalProps = {
       categories,
+      tags,
       item: modalType === 'create' ? {} : currentItem,
       visible: modalVisible,
       maskClosable: false,
@@ -62,6 +64,7 @@ class Blog extends PureComponent {
 
     const listProps = {
       dataSource: list,
+      tags,
       loading: loading.effects['blog/query'],
       pagination,
       onChange(page) {
@@ -120,6 +123,7 @@ class Blog extends PureComponent {
 
     const filterProps = {
       categories,
+      tags,
       filter: {
         ...query,
       },

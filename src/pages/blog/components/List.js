@@ -33,7 +33,7 @@ class List extends PureComponent {
   }
 
   render() {
-    const { onDeleteItem, onEditItem, ...tableProps } = this.props
+    const { onDeleteItem, onOpenItem, onEditItem, tags, ...tableProps } = this.props
     const columns = [
       {
         title: 'banner',
@@ -54,6 +54,7 @@ class List extends PureComponent {
       {
         title: '标签',
         dataIndex: 'tags',
+        render: text => <>{text.map(item => <Tag key={item} color="blue">{((tags || []).find(tag => tag._id === item) || {}).name}</Tag>)}</>
       },
       {
         title: '状态',
@@ -116,8 +117,8 @@ class List extends PureComponent {
 
 List.propTypes = {
   onDeleteItem: PropTypes.func,
+  onOpenItem: PropTypes.func,
   onEditItem: PropTypes.func,
-  location: PropTypes.object,
 }
 
 export default List
