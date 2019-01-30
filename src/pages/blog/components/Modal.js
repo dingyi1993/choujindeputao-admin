@@ -17,7 +17,7 @@ class BlogModal extends PureComponent {
   constructor(props) {
     super(props)
     this.state = {
-      md: props.item.md,
+      md: props.item.md || '',
     }
 
     this.handleMarkdownBlur = this.handleMarkdownBlur.bind(this)

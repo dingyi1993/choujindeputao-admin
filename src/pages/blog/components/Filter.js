@@ -44,26 +44,33 @@ class Filter extends PureComponent {
   }
 
   render() {
-    const { onAdd, filter, form, categories } = this.props
+    const { onAdd, filter, form, categories = [], tags = [] } = this.props
     const { getFieldDecorator } = form
-    const { name } = filter
+    const { title, category, tag, status } = filter
 
     return (
       <Form layout="inline" onSubmit={this.handleSubmit}>
         <Form.Item label="标题">
-          {getFieldDecorator('title', { initialValue: name })(
+          {getFieldDecorator('title', { initialValue: title })(
             <Input placeholder="查找标题" />
           )}
         </Form.Item>
         <Form.Item label="分类">
-          {getFieldDecorator('category')(
-            <Select placeholder="选择分类" style={{ width: 100 }}>
-              {(categories || []).map(item => <Select.Option key={item.id} value={item.id}>{item.name}</Select.Option>)}
+          {getFieldDecorator('category', { initialValue: category })(
+            <Select allowClear placeholder="选择分类" style={{ width: 100 }}>
+              {categories.map(item => <Select.Option key={item.id} value={item.id}>{item.name}</Select.Option>)}
+            </Select>
+          )}
+        </Form.Item>
+        <Form.Item label="标签">
+          {getFieldDecorator('tag', { initialValue: tag })(
+            <Select allowClear placeholder="选择标签" style={{ width: 100 }}>
+              {tags.map(item => <Select.Option key={item.id} value={item.id}>{item.name}</Select.Option>)}
             </Select>
           )}
         </Form.Item>
         <Form.Item label="状态">
-          {getFieldDecorator('status')(
+          {getFieldDecorator('status', { initialValue: status && Number(status) })(
             <Select allowClear placeholder="选择状态" style={{ width: 100 }}>
               {[{ name: '有效', value: 1 }, { name: '失效', value: 2 }].map(item => <Select.Option key={item.value} value={item.value}>{item.name}</Select.Option>)}
             </Select>

@@ -3,13 +3,13 @@ export default {
   logoutUser: '/user/access/logout',
   loginUser: 'POST /user/access/login',
 
-  queryBlog: '/blog/:id',
-  queryBlogList: '/blog',
-  updateBlog: 'PUT /blog/:id',
-  createBlog: 'POST /blog',
-  removeBlog: 'DELETE /blog/:id',
+  queryBlog: '/admin/blog/:id',
+  queryBlogList: '/admin/blog',
+  updateBlog: 'PUT /admin/blog/:id',
+  createBlog: 'POST /admin/blog',
+  removeBlog: 'DELETE /admin/blog/:id',
   removeBlogList: 'POST /blog/delete',
-  openBlog: 'Patch /blog/open/:id',
+  openBlog: 'Patch /admin/blog/open/:id',
 
   queryCategoryList: '/category',
 
