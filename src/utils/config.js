@@ -1,6 +1,6 @@
 module.exports = {
-  siteName: 'AntD Admin',
-  copyright: 'Ant Design Admin  © 2018 zuiidea',
+  siteName: '抽筋的葡萄后台',
+  copyright: '抽筋的葡萄  © 2019 dingyi1993',
   logoPath: './logo.svg',
   apiPrefix: `${process.env.NODE_ENV === 'production' ? 'https://www.dingyi1993.com' : 'http://127.0.0.1:7001'}/api`,
   fixedHeader: true, // sticky primary layout header
@@ -10,7 +10,7 @@ module.exports = {
     {
       name: 'primary',
       include: [/.*/],
-      exlude: [/\/login/],
+      exclude: [/\/login/],
     },
   ],
 }
